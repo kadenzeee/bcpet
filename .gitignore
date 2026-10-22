@@ -1,1 +1,6 @@
 ./*
+/build
+*.pdf
+*.root
+*.txt
+*.py
