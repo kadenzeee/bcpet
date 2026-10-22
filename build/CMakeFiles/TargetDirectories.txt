@@ -1,0 +1,3 @@
+/Users/danny/Documents/Courses/5Y/yearlong/mphys/code/BCPetScanner/build/CMakeFiles/bcpet.dir
+/Users/danny/Documents/Courses/5Y/yearlong/mphys/code/BCPetScanner/build/CMakeFiles/edit_cache.dir
+/Users/danny/Documents/Courses/5Y/yearlong/mphys/code/BCPetScanner/build/CMakeFiles/rebuild_cache.dir
