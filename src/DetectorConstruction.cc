@@ -3,6 +3,7 @@
 //  builds PET ring of scintillator crystals.
 //
 
+
 #include "G4Ellipsoid.hh"
 #include "G4LogicalVolume.hh"
 #include "G4PVPlacement.hh"
@@ -10,6 +11,12 @@
 #include "G4VisAttributes.hh"
 #include "G4Colour.hh"
 #include "G4Box.hh"
+#include "G4Sphere.hh"
+#include "G4SDManager.hh"
+#include "G4NistManager.hh"
+#include "SensitiveDetector.hh"
+#include "SimulationConfig.hh"
+#include <iostream>
 
 #include "MaterialsList.hh"
 #include "DetectorConstruction.hh"
@@ -57,6 +64,29 @@ G4VPhysicalVolume* DetectorConstruction::Construct() {
     auto tumourSolid = new G4Ellipsoid("tumourSolid", tumourSemiAxes.x(), tumourSemiAxes.y(), tumourSemiAxes.z());
     auto tumourLogical = new G4LogicalVolume(tumourSolid, water, "tumourLogical");
     new G4PVPlacement(nullptr, tumourPosition, tumourLogical, "tumourPV", breastLogical, false, 0, true);
+
+    // Ideal Detector Shell
+    const auto* config = SimulationConfig::Instance();
+    const G4double rInner = config->detectorRadius;
+    const G4double rOuter = config->detectorRadius + config->detectorThickness;
+    auto detectorSolid = new G4Sphere(
+        "sphericalDetectorSolid", rInner, rOuter, 0.*deg, 360.*deg, 0.*deg, 180.*deg);
+    auto detectorLogical = new G4LogicalVolume(
+        detectorSolid, air, "sphericalDetectorLogical");
+    new G4PVPlacement(nullptr, G4ThreeVector(), detectorLogical,
+                      "sphericalDetectorPV", worldLogical, false, 0, true);
+
+    auto* sdManager = G4SDManager::GetSDMpointer();
+    auto* sensitiveDetector = new SensitiveDetector("SphericalGammaSD");
+    sdManager->AddNewDetector(sensitiveDetector);
+    detectorLogical->SetSensitiveDetector(sensitiveDetector);
+
+    auto detectorVis = new G4VisAttributes();
+    detectorVis->SetVisibility(true);
+    detectorVis->SetForceWireframe(true);
+    detectorVis->SetColour(1.0, 0.0, 0.0);
+    detectorLogical->SetVisAttributes(detectorVis);
+
 
     // ----------------
     //  GUI
