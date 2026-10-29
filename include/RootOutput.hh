@@ -15,7 +15,7 @@ public:
     void FillCrossing(G4int eventID, G4int trackID, G4int parentID, G4int pdg,
                       G4double x, G4double y, G4double z,
                       G4double dx, G4double dy, G4double dz,
-                      G4double energyKeV, G4double timeNs);
+                      G4double energyKeV, G4double decayTimeNs, G4double timeNs);
 
 private:
     RootOutput() = default;
@@ -33,6 +33,7 @@ private:
     G4double x_ = 0., y_ = 0., z_ = 0.;
     G4double dx_ = 0., dy_ = 0., dz_ = 0.;
     G4double energyKeV_ = 0.;
+    G4double relativeTimeNs_ = 0.;
     G4double timeNs_ = 0.;
 };
 

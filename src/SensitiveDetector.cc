@@ -24,7 +24,7 @@ G4bool SensitiveDetector::ProcessHits(G4Step* step, G4TouchableHistory*) {
     if (pre->GetStepStatus() != fGeomBoundary) return false;
 
     const auto* track = step->GetTrack();
-    if (track->GetDefinition() != G4Gamma::Gamma()) return false;
+    if (track->GetDefinition() != G4Gamma::Gamma()) return false; // reject all non-photon events like neutrinos
 
     const auto* event = G4EventManager::GetEventManager()->GetConstCurrentEvent();
     if (!event) return false;
@@ -39,6 +39,7 @@ G4bool SensitiveDetector::ProcessHits(G4Step* step, G4TouchableHistory*) {
         position.x()/mm, position.y()/mm, position.z()/mm,
         direction.x(), direction.y(), direction.z(),
         track->GetKineticEnergy()/keV,
+        decayTimeNs,
         track->GetGlobalTime()/ns
     );
     return true;

@@ -35,6 +35,7 @@ void RootOutput::Open(const G4String& filename) {
     crossings_->Branch("dy", &dy_, "dy/D");
     crossings_->Branch("dz", &dz_, "dz/D");
     crossings_->Branch("energy_keV", &energyKeV_, "energy_keV/D");
+    crossings_->Branch("relativeTime_ns", &relativeTimeNs_, "relativeTime_ns/D");
     crossings_->Branch("time_ns", &timeNs_, "time_ns/D");
 }
 
@@ -52,7 +53,7 @@ void RootOutput::Close() {
 void RootOutput::FillCrossing(G4int eventID, G4int trackID, G4int parentID, G4int pdg,
                               G4double x, G4double y, G4double z,
                               G4double dx, G4double dy, G4double dz,
-                              G4double energyKeV, G4double timeNs) {
+                              G4double energyKeV, G4double decayTimeNs, G4double timeNs) {
     if (!crossings_) return;
     eventID_ = eventID;
     trackID_ = trackID;
@@ -62,5 +63,7 @@ void RootOutput::FillCrossing(G4int eventID, G4int trackID, G4int parentID, G4in
     dx_ = dx; dy_ = dy; dz_ = dz;
     energyKeV_ = energyKeV;
     timeNs_ = timeNs;
+    relativeTimeNs_ = timeNs - decayTimeNs;
+    
     crossings_->Fill();
 }
