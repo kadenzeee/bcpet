@@ -42,7 +42,6 @@ void RootOutput::Close() {
     if (file_) {
         file_->cd();
         if (crossings_) crossings_->Write();
-        file_->Write();
         file_->Close();
         delete file_;
     }
