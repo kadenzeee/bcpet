@@ -23,6 +23,10 @@
 
 DetectorConstruction::DetectorConstruction() = default;
 
+// ----
+// Setters and Getters
+// ----
+
 void DetectorConstruction::SetTumourPosition(const G4ThreeVector& position) {
     tumourPosition = position;
 }
@@ -40,6 +44,8 @@ G4ThreeVector DetectorConstruction::GetTumourSemiAxes() const {
 }
 
 G4VPhysicalVolume* DetectorConstruction::Construct() {
+
+    // Define and place the objects
 
     MaterialsList materialsList;
     materialsList.DefineMaterials();
@@ -84,7 +90,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct() {
     auto detectorVis = new G4VisAttributes();
     detectorVis->SetVisibility(true);
     detectorVis->SetForceWireframe(true);
-    detectorVis->SetColour(1.0, 0.0, 0.0);
+    detectorVis->SetColour(1.0, 0.0, 0.0); // red
     detectorLogical->SetVisAttributes(detectorVis);
 
 
@@ -99,13 +105,13 @@ G4VPhysicalVolume* DetectorConstruction::Construct() {
     auto breastVis = new G4VisAttributes();
     breastVis->SetVisibility(true);
     breastVis->SetForceSolid(true);
-    breastVis->SetColour(108/255., 166/255., 188/255., 0.3);
+    breastVis->SetColour(108/255., 166/255., 188/255., 0.3); // cyan
     breastLogical->SetVisAttributes(breastVis);
 
     auto tumourVis = new G4VisAttributes();
     tumourVis->SetVisibility(true);
     tumourVis->SetForceSolid(true);
-    tumourVis->SetColour(100/255., 100/255., 100/255, 0.5);
+    tumourVis->SetColour(100/255., 100/255., 100/255, 0.5); // grey
     tumourLogical->SetVisAttributes(tumourVis);
 
     return worldPhysical;
