@@ -13,7 +13,7 @@ ActionInitialization::ActionInitialization() {}
 ActionInitialization::~ActionInitialization() {}
 
 void ActionInitialization::Build() const {
-    SetUserAction(new DecayTimerAction())
+    SetUserAction(new DecayTimerAction());
     SetUserAction(new PrimaryGeneratorAction());
     SetUserAction(new RunAction());
     SetUserAction(new EventAction());

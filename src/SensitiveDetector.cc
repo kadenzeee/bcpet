@@ -1,5 +1,6 @@
 #include "SensitiveDetector.hh"
 #include "RootOutput.hh"
+#include "DecayTimeInfo.hh"
 
 #include "G4Step.hh"
 #include "G4StepPoint.hh"
@@ -11,6 +12,7 @@
 #include "G4PhysicalConstants.hh"
 #include "G4ThreeVector.hh"
 #include "G4StepStatus.hh"
+#include "G4Exception.hh"
 
 SensitiveDetector::SensitiveDetector(const G4String& name)
     : G4VSensitiveDetector(name) {}
@@ -31,6 +33,16 @@ G4bool SensitiveDetector::ProcessHits(G4Step* step, G4TouchableHistory*) {
 
     const G4ThreeVector position = pre->GetPosition();
     const G4ThreeVector direction = track->GetMomentumDirection();
+
+    const auto* info = static_cast<const DecayTimeInfo*>(
+    event->GetUserInformation()
+    );
+    if (!info || !info->HasDecayTime()) { //protector so that background decays do not have a decay time
+        return false;
+    }
+
+    const G4double decayTimeNs = info->GetDecayTime() / ns;
+
     RootOutput::Instance()->FillCrossing(
         event->GetEventID(),
         track->GetTrackID(),
